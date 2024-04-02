@@ -1,5 +1,5 @@
 import numpy as np
-from matplotlib import pyplot as plt
+
 from tensorflow import keras
 from tensorflow.keras import layers
 
@@ -43,14 +43,16 @@ mw = ModelWrapper()
 mw.add_model(keras.Sequential([
     layers.Dense(64, activation='relu'),
     layers.Dense(64, activation='relu'),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(64, activation='relu'),
     layers.Dense(46, activation='softmax'),
-]), "norm")
+]), "")
 
 mw.add_model(keras.Sequential([
-    layers.Dense(132, activation='relu'),
-    layers.Dense(132, activation='relu'),
+    layers.Dense(64, activation='relu'),
+    layers.Dense(64, activation='relu'),
     layers.Dense(46, activation='softmax'),
-]), "big_lay")
+]), "")
 
 mw.add_model(keras.Sequential([
     layers.Dense(64, activation='relu'),
@@ -67,5 +69,5 @@ part_y_train = y_train[1000:]
 #  loss='categorical_crossentropy',
 mw.compile(optimizer='rmsprop', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-mw.fit(x=part_x_train, y=part_y_train, epochs=9, batch_size=512, validation_data=(x_val, y_val))
+mw.fit(x=part_x_train, y=part_y_train, epochs=10, batch_size=128, validation_data=(x_val, y_val))
 mw.plot_hist()

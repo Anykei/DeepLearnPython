@@ -14,7 +14,7 @@ x = layers.MaxPooling2D(pool_size=2)(x)
 x = layers.Conv2D(filters=64, kernel_size=3, activation="relu")(x)
 x = layers.MaxPooling2D(pool_size=2)(x)
 x = layers.Conv2D(filters=128, kernel_size=3, activation="relu")(x)
-x = layers.MaxPooling2D(pool_size=2)(x)
+x = layers.MaxPooling2D(pool_size=2)(x) 
 x = layers.Conv2D(filters=256, kernel_size=3, activation="relu")(x)
 x = layers.MaxPooling2D(pool_size=2)(x)
 x = layers.Conv2D(filters=256, kernel_size=3, activation="relu")(x)
@@ -27,5 +27,17 @@ print(model.summary())
 model.compile(loss="binary_crossentropy", optimizer="rmsprop", metrics=["accuracy"])
 
 train = keras.utils.image_dataset_from_directory(new_base_dir/"train", image_size=(180, 180), batch_size=32)
-validation = keras.utils.image_dataset_from_directory(new_base_dir/"train", image_size=(180, 180), batch_size=32)
-test = keras.utils.image_dataset_from_directory(new_base_dir/"train", image_size=(180, 180), batch_size=32)
+validation = keras.utils.image_dataset_from_directory(new_base_dir/"validation", image_size=(180, 180), batch_size=32)
+test = keras.utils.image_dataset_from_directory(new_base_dir/"test", image_size=(180, 180), batch_size=32)
+
+callbacks = [
+    keras.callbacks.ModelCheckpoint(
+        filepath="convnet_from_scratch.keras",
+        save_best_only=True,
+        monitor="val_loss"
+    )
+]
+
+model.fit(train, epochs=30, validation_data=validation, callbacks=callbacks)
+
+print(model.evaluate(test))

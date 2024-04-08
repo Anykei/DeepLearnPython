@@ -13,8 +13,12 @@ def get_mnist_model():
     return model
 
 
+def get_raw_mnist_dataset():
+    return keras.datasets.mnist.load_data()
+
+
 def get_mnist_dataset():
-    (images, labels), (test_images, test_labels) = keras.datasets.mnist.load_data()
+    (images, labels), (test_images, test_labels) = get_raw_mnist_dataset()
     images = images.reshape((60000, 28 * 28)).astype("float32") / 255
     test_images = test_images.reshape((10000, 28 * 28)).astype("float32") / 255
     train_images, val_images = images[10000:], images[10000:]
